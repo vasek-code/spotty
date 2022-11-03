@@ -1,0 +1,33 @@
+.open {
+  animation-name: open;
+  animation-duration: 500ms;
+  animation-fill-mode: forwards;
+}
+
+@keyframes open {
+  from {
+    transform: translateY(-20px);
+    opacity: 0%;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 100%;
+  }
+}
+
+.hidden {
+  animation-name: hidden;
+  animation-duration: 500ms;
+  animation-fill-mode: forwards;
+}
+
+@keyframes hidden {
+  from {
+    transform: translateY(0px);
+    opacity: 100%;
+  }
+  to {
+    transform: translateY(-20px);
+    opacity: 0%;
+  }
+}

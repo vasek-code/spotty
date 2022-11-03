@@ -1,0 +1,35 @@
+.opened {
+  animation-name: opened;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes opened {
+  from {
+    transform: scale(0) translateX(100px) translateY(-100px);
+    opacity: 0%;
+    display: none;
+  }
+  to {
+    transform: scale(1) translateX(0px);
+    opacity: 100%;
+  }
+}
+
+.closed {
+  animation-name: closed;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes closed {
+  from {
+    transform: scale(1) translateX(0px);
+    opacity: 100%;
+  }
+  to {
+    transform: scale(0) translateX(100px) translateY(-100px);
+    opacity: 0%;
+    display: none;
+  }
+}

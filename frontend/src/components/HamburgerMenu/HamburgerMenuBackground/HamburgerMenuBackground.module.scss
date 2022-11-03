@@ -1,0 +1,29 @@
+.bgOpened {
+  animation-name: bgOpened;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes bgOpened {
+  from {
+    opacity: 0%;
+  }
+  to {
+    opacity: 60%;
+  }
+}
+
+.bgClosed {
+  animation-name: bgClosed;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes bgClosed {
+  from {
+    opacity: 60%;
+  }
+  to {
+    opacity: 0%;
+  }
+}
