@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import MapPage from "../pages/map";
-import BestFindersPage from "../pages/map/best-finders";
+import MapPage from "../pages_old/map";
+import BestFindersPage from "../pages_old/map/best-finders";
 
 export const MapWrapper: React.FC<{
   children: React.ReactNode;
