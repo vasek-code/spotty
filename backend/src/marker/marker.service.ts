@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { EventEmitter2 } from "@nestjs/event-emitter";
 
 import { RequestUser } from "src/auth/strategy";
 import { PrismaService } from "src/prisma/prisma.service";
@@ -6,7 +7,10 @@ import { MarkerCreateDto } from "./dto";
 
 @Injectable()
 export class MarkerService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private eventEmitter: EventEmitter2
+  ) {}
 
   async getAll() {
     const markers = await this.prisma.marker.findMany();
@@ -26,6 +30,8 @@ export class MarkerService {
         creatorId: user.id,
       },
     });
+
+    this.eventEmitter.emit("marker.create", marker);
 
     return marker;
   }

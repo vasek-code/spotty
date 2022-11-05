@@ -2,6 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 
 import { HomePageMarker } from "./HomePageMarker";
 
@@ -14,6 +15,10 @@ export const HomePageBackground = () => {
     setInterval(() => {
       setMarkers((prevState) => [...prevState, prevState.length + 1]);
     }, 1000);
+  }, []);
+
+  useEffect(() => {
+    const socket = io("http://localhost:4000");
   }, []);
 
   return (
