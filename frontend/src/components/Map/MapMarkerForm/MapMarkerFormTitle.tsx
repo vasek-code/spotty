@@ -5,9 +5,9 @@ import {
 } from "../../../contexts/MarkerFormContext";
 
 const MapMarkerFormTitle = () => {
-  const { title, setTitle } = useContext(
-    markerCreateContext
-  ) as MarkerContextType;
+  // const { title, setTitle } = useContext(
+  //   markerCreateContext
+  // ) as MarkerContextType;
 
   return (
     <div className="w-full flex flex-col gap-3">
@@ -16,9 +16,9 @@ const MapMarkerFormTitle = () => {
         className="w-full h-14 border-2 border-zinc-300 rounded-full px-5 outline-none font-semibold focus-visible:border-zinc-400 transition-all"
         placeholder="Enter title"
         onChange={(e) => {
-          setTitle(e.target.value);
+          // setTitle(e.target.value);
         }}
-        value={title}
+        // value={title}
       />
     </div>
   );

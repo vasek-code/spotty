@@ -11,9 +11,10 @@ const Layout: React.FC<layoutProps> = ({ children }) => {
   return (
     <html lang="en">
       <body>
+        <div id="menu" className="z-20 absolute w-full" />
+
         <Navbar />
         {children}
-        <div id="menu" className="z-20 absolute w-full" />
       </body>
     </html>
   );

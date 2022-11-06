@@ -3,6 +3,7 @@ import React, { createContext, useCallback, useState } from "react";
 import { trpc } from "../utils/trpc";
 import { env } from "../env/client.mjs";
 import { useSession } from "../hooks/useSession";
+// import { useSession } from "../hooks/useSession";
 
 export interface ImageType {
   lastModified: number;
@@ -21,8 +22,8 @@ export interface MarkerContextType {
   description: string;
   setDescription: React.Dispatch<React.SetStateAction<string>>;
   onSubmit: () => void;
-  formData: FormData | null;
-  setFormData: React.Dispatch<React.SetStateAction<FormData | null>>;
+  images: string[];
+  setImages: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export const markerCreateContext = createContext<MarkerContextType | null>(
@@ -38,46 +39,19 @@ export const MarkerCreateProvider: React.FC<{
   const [hashtags, setHashtags] = useState<string[]>(["#"]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [formData, setFormData] = useState<FormData | null>(null);
+  const [images, setImages] = useState<string[]>([]);
   const { data, loading } = useSession();
-  const markerCreateMutation = trpc.useMutation(["marker.create"], {
-    onSuccess: () => {
-      closeForm();
-      setTitle("");
-      setHashtags(["#"]);
-      setDescription("");
-      setFormData(new FormData());
-    },
-  });
 
   const onSubmit = useCallback(async () => {
-    if (loading) return;
-
-    const client = new Pocketbase(env.NEXT_PUBLIC_POCKETBASE_URL);
-
-    formData?.append("owner", data?.id as string);
-
-    const images = await client.records.create("images", formData as FormData);
-
-    await markerCreateMutation.mutateAsync({
-      hashtags,
-      lat,
-      lng,
-      title,
-      description,
-      images: images.id,
-    });
-  }, [
-    data?.id,
-    description,
-    formData,
-    hashtags,
-    lat,
-    lng,
-    loading,
-    markerCreateMutation,
-    title,
-  ]);
+    // await markerCreateMutation.mutateAsync({
+    //   hashtags,
+    //   lat,
+    //   lng,
+    //   title,
+    //   description,
+    //   images: images.id,
+    // });
+  }, []);
 
   return (
     <markerCreateContext.Provider
@@ -89,8 +63,8 @@ export const MarkerCreateProvider: React.FC<{
         description,
         setDescription,
         onSubmit,
-        formData,
-        setFormData,
+        setImages,
+        images,
       }}
     >
       {children}

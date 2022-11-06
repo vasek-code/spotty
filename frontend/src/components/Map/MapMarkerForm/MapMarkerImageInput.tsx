@@ -9,34 +9,34 @@ import {
 
 const MapMarkerImageInput = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { setFormData } = useContext(markerCreateContext) as MarkerContextType;
+  // const { setFormData } = useContext(markerCreateContext) as MarkerContextType;
 
   const [imagesUrl, setImagesUrl] = useState<string[]>([]);
   const [currentImage, setCurrentImage] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const onChange = useCallback(
-    async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const formData = new FormData();
+  // const onChange = useCallback(
+  //   async (e: React.ChangeEvent<HTMLInputElement>) => {
+  //     const formData = new FormData();
 
-      for (const file of e.target.files as FileList) {
-        formData.append("images", file);
+  //     for (const file of e.target.files as FileList) {
+  //       formData.append("images", file);
 
-        const fileReader = new FileReader();
-        fileReader.onload = (event) => {
-          setImagesUrl((prevState) => [
-            ...prevState,
-            event.target?.result as string,
-          ]);
-        };
-        fileReader.readAsDataURL(file);
-      }
+  //       const fileReader = new FileReader();
+  //       fileReader.onload = (event) => {
+  //         setImagesUrl((prevState) => [
+  //           ...prevState,
+  //           event.target?.result as string,
+  //         ]);
+  //       };
+  //       fileReader.readAsDataURL(file);
+  //     }
 
-      setFormData(formData);
-    },
-    [setFormData]
-  );
+  //     setFormData(formData);
+  //   },
+  //   [setFormData]
+  // );
 
   return (
     <div
@@ -133,7 +133,7 @@ const MapMarkerImageInput = () => {
           type="file"
           multiple
           className="hidden absolute w-full h-full"
-          onChange={onChange}
+          // onChange={onChange}
         />
       </div>
     </div>

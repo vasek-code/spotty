@@ -1,22 +1,41 @@
 "use client";
 
+import { useRouter } from "next/router";
 import React, { useRef } from "react";
 
 import { SignInInput } from "../../components/SignIn/SignInInput";
-import { env } from "../../env/client.mjs";
-import Pocketbase from "pocketbase";
+import { fetchServer } from "../../utils/fetchServer";
+import { getClientToken } from "../../utils/getClientToken";
 
 const SignInForm = () => {
   const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
 
   return (
     <form
       className="max-w-xl w-full flex flex-col justify-center gap-3"
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
-        const client = new Pocketbase(env.NEXT_PUBLIC_POCKETBASE_URL);
+
         const formData = new FormData(formRef.current as HTMLFormElement);
-        
+
+        for (const [key, value] of formData.entries()) {
+          console.log([key, value]);
+          console.log(formData.get("password"));
+        }
+
+        const res = await fetchServer("auth/signin", "POST", "", {
+          email: formData.get("email"),
+          password: formData.get("password"),
+        });
+
+        if (res.ok) {
+          const data = (await res.json()) as { access_token: string };
+
+          localStorage.setItem("spotty_auth", data.access_token);
+
+          document.cookie = `spotty_auth=${data.access_token}`;
+        }
       }}
       ref={formRef}
     >

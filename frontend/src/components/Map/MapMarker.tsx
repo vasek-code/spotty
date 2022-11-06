@@ -1,11 +1,13 @@
+"use client";
+
+import { Marker as MarkerType } from "../../../../backend/node_modules/@prisma/client";
 import { Marker } from "@react-google-maps/api";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { MarkerRecordType } from "../../types/MarkerRecordType";
 import { MapDetail } from "./MapDetail/MapDetail";
 
 export const MapMarker: React.FC<{
-  marker: MarkerRecordType;
+  marker: MarkerType;
 }> = ({ marker }) => {
   const router = useRouter();
 
@@ -13,6 +15,8 @@ export const MapMarker: React.FC<{
   const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
+    if (!router) return;
+
     const interval = setInterval(() => {
       if (router.query.markerId === marker.id) {
         setOpened(true);

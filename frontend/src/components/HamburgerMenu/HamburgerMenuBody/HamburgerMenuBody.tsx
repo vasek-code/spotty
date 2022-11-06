@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import ReactDOM from "react-dom";
 import { HamburgerMenuBackground } from "../HamburgerMenuBackground/HamburgerMenuBackground";

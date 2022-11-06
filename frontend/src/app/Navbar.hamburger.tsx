@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 
 import { GrMap } from "react-icons/gr";

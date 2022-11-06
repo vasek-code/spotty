@@ -1,4 +1,7 @@
+"use client";
+
 /* eslint-disable @next/next/no-img-element */
+import { Marker as MarkerType } from "../../../../../backend/node_modules/@prisma/client";
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { MapDetailBody } from "./MapDetailBody";
@@ -20,39 +23,19 @@ export const MapDetail: React.FC<{
   setOpened: React.Dispatch<React.SetStateAction<boolean>>;
   opened: boolean;
   clicked: boolean;
-  marker: MarkerRecordType;
+  marker: MarkerType;
 }> = ({ setOpened, opened, clicked, marker }) => {
-  const creator = trpc.useQuery(["user.getOneById", { id: marker.creator }]);
-  const images = trpc.useQuery(["image.getOneById", { id: marker.images }]);
-  const comments = trpc.useQuery([
-    "comment.getAllPerMarkerId",
-    { markerId: marker.id },
-  ]);
   const router = useRouter();
 
-  useEffect(() => {
-    const client = new Pocketbase(env.NEXT_PUBLIC_POCKETBASE_URL);
-
-    client.realtime.subscribe("comments", () => {
-      comments.refetch();
-    });
-
-    return () => {
-      client.realtime.unsubscribe("comments");
-    };
-  }, []);
+  useEffect(() => {}, []);
 
   const [currentImage, setCurrentImage] = useState(0);
-
-  if (creator.status === "loading") return null;
-
-  if (images.status === "loading") return null;
 
   if (!clicked) return null;
 
   return ReactDOM.createPortal(
     <>
-      <MapDetailBody opened={opened}>
+      {/* <MapDetailBody opened={opened}>
         <div className="w-full h-full grid p-3 overflow-y-scroll">
           <CloseMenuButton
             setOpened={setOpened}
@@ -214,7 +197,7 @@ export const MapDetail: React.FC<{
             </div>
           </div>
         </div>
-      </MapDetailBody>
+      </MapDetailBody> */}
     </>,
     document.querySelector("body") as Element
   );

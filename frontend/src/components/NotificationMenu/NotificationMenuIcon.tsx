@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { BiBell, BiBellOff } from "react-icons/bi";
 

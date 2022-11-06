@@ -1,3 +1,5 @@
+"use client";
+
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import ReactDOM from "react-dom";
@@ -10,6 +12,8 @@ import { MapMarkerDescriptionArea } from "./MapMarkerDescriptionArea";
 import MapMarkerFormSubmit from "./MapMarkerFormSubmit";
 import MapMarkerImageInput from "./MapMarkerImageInput";
 import CloseMenuButton from "../../CloseMenuButton";
+import { MarkersProvider } from "../../../contexts/MarkersContext";
+import { MarkerCreateProvider } from "../../../contexts/MarkerFormContext";
 
 const MarkerCreateForm: React.FC<{
   setOpened: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,7 +23,13 @@ const MarkerCreateForm: React.FC<{
   if (!clicked) return null;
 
   return ReactDOM.createPortal(
-    <>
+    <MarkerCreateProvider
+      closeForm={() => {
+        setOpened(false);
+      }}
+      lat={0}
+      lng={0}
+    >
       <style>
         {`
           /* width */
@@ -92,8 +102,8 @@ const MarkerCreateForm: React.FC<{
           </div>
         </div>
       </div>
-    </>,
-    document.querySelector("#__next") as Element
+    </MarkerCreateProvider>,
+    document.querySelector("body") as Element
   );
 };
 

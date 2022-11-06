@@ -10,20 +10,15 @@ import { VscSignOut } from "react-icons/vsc";
 import { UserMenuBody } from "../components/UserMenu/UserMenuBody/UserMenuBody";
 import { UserMenuButton } from "../components/UserMenu/UserMenuButton";
 import { UserMenuIcon } from "../components/UserMenu/UserMenuIcon";
+import { useSession } from "../hooks/useSession";
 
-interface propsType {
-  user: {
-    id: string;
-    avatarUrl: string;
-    name: string;
-    email: string;
-  };
-}
-
-const NavbarUser: React.FC<propsType> = ({ user }) => {
+const NavbarUser = () => {
   const [opened, setOpened] = useState(false);
   const [clicked, setClicked] = useState(false);
-  const router = useRouter();
+
+  const { data: user, signOut } = useSession();
+
+  if (!user) return null;
 
   return (
     <>
@@ -37,13 +32,21 @@ const NavbarUser: React.FC<propsType> = ({ user }) => {
       />
       <UserMenuBody opened={opened} clicked={clicked}>
         <UserMenuButton Icon={RiUserLine} top>
-          {user.name === "" ? user.email.split("@")[0] : user.name}
+          {user.name === "" || user.name === null
+            ? user.email.split("@")[0]
+            : user.name}
         </UserMenuButton>
         <UserMenuButton Icon={HiOutlineLocationMarker}>
           My places
         </UserMenuButton>
         <UserMenuButton Icon={HiOutlineCog}>Settings</UserMenuButton>
-        <UserMenuButton onClick={() => {}} Icon={VscSignOut} bottom>
+        <UserMenuButton
+          onClick={async () => {
+            await signOut();
+          }}
+          Icon={VscSignOut}
+          bottom
+        >
           Sign Out
         </UserMenuButton>
       </UserMenuBody>

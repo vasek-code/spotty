@@ -1,8 +1,10 @@
-import { Controller, Get, Param, UseGuards } from "@nestjs/common";
+import { Controller, Get, Param, Res, UseGuards } from "@nestjs/common";
 
 import { GetUser } from "src/auth/decorator";
 import { JwtGuard } from "src/auth/guard";
 import { UserService } from "./user.service";
+import { Response } from "express";
+import { RequestUser } from "src/auth/strategy";
 
 @UseGuards(JwtGuard)
 @Controller("user")
@@ -10,8 +12,7 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get("me")
-  async getMe(@GetUser() user: any) {
-    console.log(user);
+  async getMe(@GetUser() user: RequestUser) {
     return user;
   }
 
@@ -23,5 +24,11 @@ export class UserController {
   @Get("best-finders")
   async getBestFinders() {
     return await this.userService.getBestFinders();
+  }
+
+  @Get("remove-token")
+  async removeToken(@Res() response: Response) {
+    response.setHeader("set-cookie", "spotty_auth=; path=/;");
+    return;
   }
 }

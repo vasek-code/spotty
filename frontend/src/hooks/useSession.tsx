@@ -1,28 +1,58 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { trpc } from "../utils/trpc";
+import { useEffect, useState } from "react";
+import { getMe } from "../calls/getMe";
+import { User } from "../../../backend/node_modules/@prisma/client";
+import { getClientToken } from "../utils/getClientToken";
 
 export const useSession = () => {
-  const getUser = trpc.useQuery(["user.getSession"], {
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-  });
-  const removeCookie = trpc.useMutation(["user.removeToken"]);
-  const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  const fetchUser = async () => {
+    setLoading(true);
+    const token = getClientToken();
+
+    if (!token) {
+      setError(true);
+      setUser(null);
+      return;
+    } else {
+      setError(false);
+    }
+    const userRes = await getMe(token);
+
+    if (userRes.ok) {
+      console.log(user);
+      setUser(await userRes.json());
+      setLoading(false);
+    } else {
+      setLoading(true);
+      setError(true);
+      setUser(null);
+    }
+  };
+
+  const removeCookie = async () => {
+    await fetch("http://localhost:4000/user/remove-token");
+
+    localStorage.setItem("spotty_auth", "");
+  };
 
   useEffect(() => {
-    getUser.refetch().then();
-  }, [router.pathname]);
+    (async () => {
+      await fetchUser();
+    })();
+  }, []);
 
   return {
-    data: getUser.data,
+    data: user,
     signOut: async () => {
-      await removeCookie.mutateAsync();
-      await getUser.refetch();
+      await removeCookie();
+      await fetchUser();
     },
-    loading: getUser.isLoading,
+    loading: loading,
+    error,
   };
 };
